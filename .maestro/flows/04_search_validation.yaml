@@ -1,0 +1,42 @@
+appId: com.example.compassApp
+name: Search is only enabled once the form is complete
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: home_book_new_trip
+- assertVisible:
+    enabled: false
+    childOf:
+      id: search_submit
+
+# Continent alone is not enough
+- tapOn:
+    id: search_continent_asia
+- assertVisible:
+    enabled: false
+    childOf:
+      id: search_submit
+
+# Guests counter cannot go below zero
+- tapOn:
+    id: search_guests_remove
+- assertVisible:
+    id: search_guests_count
+    text: "0"
+- tapOn:
+    id: search_guests_add
+- assertVisible:
+    id: search_guests_count
+    text: "1"
+- assertVisible:
+    enabled: false
+    childOf:
+      id: search_submit
+
+# Back navigation returns home without saving
+- tapOn:
+    id: nav_home
+- assertVisible: "Sofie's Trips"

@@ -1,0 +1,48 @@
+appId: com.example.compassApp
+name: Create a booking end to end
+tags:
+  - smoke
+  - booking
+---
+- launchApp:
+    clearState: true
+
+# Search
+- runFlow:
+    file: ../subflows/search_trip.yaml
+    env:
+      CONTINENT_ID: europe
+      GUESTS_TAPS: 2
+
+# Results
+- assertVisible: "Europe - .* - Guests: 2"
+- tapOn:
+    id: result_amalfi-coast
+
+# Activities
+- assertVisible: "0 selected"
+- assertVisible:
+    enabled: false
+    childOf:
+      id: activities_confirm
+- tapOn:
+    id: activity_scenic-boat-tour
+- tapOn:
+    id: activity_path-of-the-gods-hike
+- assertVisible: "2 selected"
+- tapOn:
+    id: activities_confirm
+
+# Booking
+- assertVisible: "Amalfi Coast"
+- assertVisible: "Your chosen activities"
+- assertVisible: ".*Scenic Boat Tour.*"
+- assertVisible: ".*Path of the Gods Hike.*"
+- assertVisible:
+    id: booking_share
+- takeScreenshot: booking_created
+
+# Back home: the new booking is listed
+- tapOn:
+    id: nav_home
+- assertVisible: "Amalfi Coast, Europe.*"

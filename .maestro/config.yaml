@@ -1,0 +1,4 @@
+# Maestro workspace config: `maestro test .maestro` runs every flow below.
+# Filter with --include-tags smoke / --exclude-tags ...
+flows:
+  - flows/*

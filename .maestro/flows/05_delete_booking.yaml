@@ -1,0 +1,21 @@
+appId: com.example.compassApp
+name: Swipe to delete a booking
+tags:
+  - regression
+---
+- launchApp:
+    clearState: true
+- assertVisible:
+    id: home_booking_0
+- waitForAnimationToEnd
+# Swipe edge to edge across the first booking row. A swipe that starts at the
+# row's center (`swipe: from: id`) is too short for Dismissible's 40% threshold.
+# 30% height lands on the first row on both Android phones and iPhones.
+# Start/end away from the screen edges: edge swipes are the OS back gesture.
+- swipe:
+    start: 85%, 30%
+    end: 10%, 30%
+    duration: 800
+- assertVisible: "Booking deleted"
+- assertNotVisible:
+    id: home_booking_0

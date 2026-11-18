@@ -1,0 +1,44 @@
+# Fills the search form and submits it, ending on the Results screen.
+# Params (env): CONTINENT_ID e.g. "europe", START_OFFSET, LENGTH, GUESTS_TAPS (1-3)
+appId: com.example.compassApp
+---
+- tapOn:
+    id: home_book_new_trip
+- assertVisible:
+    enabled: false
+    childOf:
+      id: search_submit
+- tapOn:
+    id: search_continent_${CONTINENT_ID || 'europe'}
+
+# Dates: computed relative to today so the flow never goes stale.
+- tapOn:
+    id: search_dates
+- runScript:
+    file: ../scripts/trip_dates.js
+    env:
+      START_OFFSET: ${START_OFFSET || 2}
+      LENGTH: ${LENGTH || 3}
+- scrollUntilVisible:
+    element:
+      text: ".*${output.tripStart}.*"
+- tapOn:
+    text: ".*${output.tripStart}.*"
+- scrollUntilVisible:
+    element:
+      text: ".*${output.tripEnd}.*"
+- tapOn:
+    text: ".*${output.tripEnd}.*"
+- tapOn: "Save"
+
+- repeat:
+    times: ${GUESTS_TAPS || 1}
+    commands:
+      - tapOn:
+          id: search_guests_add
+- assertVisible:
+    enabled: true
+    childOf:
+      id: search_submit
+- tapOn:
+    id: search_submit

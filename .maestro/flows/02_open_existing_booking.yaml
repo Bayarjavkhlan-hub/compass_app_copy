@@ -1,0 +1,15 @@
+appId: com.example.compassApp
+name: Open an existing booking and return home
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: home_booking_0
+- assertVisible: "Alaska"
+- assertVisible:
+    id: booking_share
+- tapOn:
+    id: nav_home
+- assertVisible: "Sofie's Trips"

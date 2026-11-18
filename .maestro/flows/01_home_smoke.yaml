@@ -1,0 +1,15 @@
+appId: com.example.compassApp
+name: Home screen loads with seeded booking
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Sofie's Trips"
+- assertVisible:
+    id: home_booking_0
+- assertVisible: "Alaska, North America.*"
+- assertVisible:
+    id: home_book_new_trip
+- assertVisible:
+    id: home_logout
