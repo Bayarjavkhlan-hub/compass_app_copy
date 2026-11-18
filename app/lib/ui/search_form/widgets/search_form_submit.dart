@@ -2,12 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../routing/routes.dart';
 import '../../core/localization/applocalization.dart';
 import '../../core/themes/dimens.dart';
+import '../../core/ui/test_ids.dart';
 import '../../results/widgets/results_screen.dart';
 import '../view_models/search_form_viewmodel.dart';
 
@@ -63,12 +64,16 @@ class _SearchFormSubmitState extends State<SearchFormSubmit> {
           child: Center(child: Text(AppLocalization.of(context).search)),
         ),
         builder: (context, child) {
-          return FilledButton(
-            key: const ValueKey(searchFormSubmitButtonKey),
-            onPressed: widget.viewModel.valid
-                ? widget.viewModel.updateItineraryConfig.execute
-                : null,
-            child: child,
+          return Semantics(
+            container: true,
+            identifier: TestIds.searchSubmit,
+            child: FilledButton(
+              key: const ValueKey(searchFormSubmitButtonKey),
+              onPressed: widget.viewModel.valid
+                  ? widget.viewModel.updateItineraryConfig.execute
+                  : null,
+              child: child,
+            ),
           );
         },
       ),

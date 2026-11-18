@@ -3,11 +3,12 @@
 // found in the LICENSE file.
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 import '../../../domain/models/activity/activity.dart';
 import '../../../utils/image_error_listener.dart';
 import '../../core/ui/custom_checkbox.dart';
+import '../../core/ui/test_ids.dart';
 
 class ActivityEntry extends StatelessWidget {
   const ActivityEntry({
@@ -57,10 +58,14 @@ class ActivityEntry extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          CustomCheckbox(
-            key: ValueKey('${activity.ref}-checkbox'),
-            value: selected,
-            onChanged: onChanged,
+          Semantics(
+            container: true,
+            identifier: TestIds.activityCheckbox(activity.ref),
+            child: CustomCheckbox(
+              key: ValueKey('${activity.ref}-checkbox'),
+              value: selected,
+              onChanged: onChanged,
+            ),
           ),
         ],
       ),

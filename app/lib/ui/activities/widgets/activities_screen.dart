@@ -2,13 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../routing/routes.dart';
 import '../../core/localization/applocalization.dart';
 import '../../core/themes/dimens.dart';
 import '../../core/ui/error_indicator.dart';
+import '../../core/ui/test_ids.dart';
 import '../view_models/activities_viewmodel.dart';
 import 'activities_header.dart';
 import 'activities_list.dart';
@@ -71,8 +72,9 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
                   Expanded(
                     child: Center(
                       child: ErrorIndicator(
-                        title: AppLocalization.of(context)
-                            .errorWhileLoadingActivities,
+                        title: AppLocalization.of(
+                          context,
+                        ).errorWhileLoadingActivities,
                         label: AppLocalization.of(context).tryAgain,
                         onPressed: widget.viewModel.loadActivities.execute,
                       ),
@@ -162,16 +164,21 @@ class _BottomArea extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppLocalization.of(context)
-                    .selected(viewModel.selectedActivities.length),
+                AppLocalization.of(
+                  context,
+                ).selected(viewModel.selectedActivities.length),
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              FilledButton(
-                key: const Key(confirmButtonKey),
-                onPressed: viewModel.selectedActivities.isNotEmpty
-                    ? viewModel.saveActivities.execute
-                    : null,
-                child: Text(AppLocalization.of(context).confirm),
+              Semantics(
+                container: true,
+                identifier: TestIds.activitiesConfirm,
+                child: FilledButton(
+                  key: const Key(confirmButtonKey),
+                  onPressed: viewModel.selectedActivities.isNotEmpty
+                      ? viewModel.saveActivities.execute
+                      : null,
+                  child: Text(AppLocalization.of(context).confirm),
+                ),
               ),
             ],
           ),

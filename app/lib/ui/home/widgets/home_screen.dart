@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../domain/models/booking/booking_summary.dart';
 import '../../../routing/routes.dart';
@@ -13,6 +13,7 @@ import '../../core/themes/colors.dart';
 import '../../core/themes/dimens.dart';
 import '../../core/ui/date_format_start_end.dart';
 import '../../core/ui/error_indicator.dart';
+import '../../core/ui/test_ids.dart';
 import '../view_models/home_viewmodel.dart';
 import 'home_title.dart';
 
@@ -55,13 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        // Workaround for https://github.com/flutter/flutter/issues/115358#issuecomment-2117157419
-        heroTag: null,
-        key: const ValueKey(bookingButtonKey),
-        onPressed: () => context.go(Routes.search),
-        label: Text(AppLocalization.of(context).bookNewTrip),
-        icon: const Icon(Icons.add_location_outlined),
+      floatingActionButton: Semantics(
+        container: true,
+        identifier: TestIds.bookNewTrip,
+        child: FloatingActionButton.extended(
+          // Workaround for https://github.com/flutter/flutter/issues/115358#issuecomment-2117157419
+          heroTag: null,
+          key: const ValueKey(bookingButtonKey),
+          onPressed: () => context.go(Routes.search),
+          label: Text(AppLocalization.of(context).bookNewTrip),
+          icon: const Icon(Icons.add_location_outlined),
+        ),
       ),
       body: SafeArea(
         top: true,
@@ -168,40 +173,50 @@ class _Booking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: ValueKey(booking.id),
-      direction: DismissDirection.endToStart,
-      confirmDismiss: confirmDismiss,
-      background: Container(
-        color: AppColors.grey1,
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(right: Dimens.paddingHorizontal),
-              child: Icon(Icons.delete),
-            ),
-          ],
-        ),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Dimens.of(context).paddingScreenHorizontal,
-            vertical: Dimens.paddingVertical,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Semantics(
+      container: true,
+      identifier: TestIds.bookingItem(booking.id),
+      child: Dismissible(
+        key: ValueKey(booking.id),
+        direction: DismissDirection.endToStart,
+        confirmDismiss: confirmDismiss,
+        background: Container(
+          color: AppColors.grey1,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(booking.name, style: Theme.of(context).textTheme.titleLarge),
-              Text(
-                dateFormatStartEnd(
-                  DateTimeRange(start: booking.startDate, end: booking.endDate),
-                ),
-                style: Theme.of(context).textTheme.bodyLarge,
+              Padding(
+                padding: EdgeInsets.only(right: Dimens.paddingHorizontal),
+                child: Icon(Icons.delete),
               ),
             ],
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: Dimens.of(context).paddingScreenHorizontal,
+              vertical: Dimens.paddingVertical,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  booking.name,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                Text(
+                  dateFormatStartEnd(
+                    DateTimeRange(
+                      start: booking.startDate,
+                      end: booking.endDate,
+                    ),
+                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ],
+            ),
           ),
         ),
       ),

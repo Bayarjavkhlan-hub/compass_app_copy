@@ -2,12 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../../routing/routes.dart';
 import '../../../core/localization/applocalization.dart';
 import '../../../core/themes/dimens.dart';
+import '../../../core/ui/test_ids.dart';
 import '../view_models/login_viewmodel.dart';
 import 'tilted_cards.dart';
 
@@ -63,21 +64,33 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextField(controller: _email),
+                  Semantics(
+                    container: true,
+                    identifier: TestIds.loginEmail,
+                    child: TextField(controller: _email),
+                  ),
                   const SizedBox(height: Dimens.paddingVertical),
-                  TextField(controller: _password, obscureText: true),
+                  Semantics(
+                    container: true,
+                    identifier: TestIds.loginPassword,
+                    child: TextField(controller: _password, obscureText: true),
+                  ),
                   const SizedBox(height: Dimens.paddingVertical),
                   ListenableBuilder(
                     listenable: widget.viewModel.login,
                     builder: (context, _) {
-                      return FilledButton(
-                        onPressed: () {
-                          widget.viewModel.login.execute((
-                            _email.value.text,
-                            _password.value.text,
-                          ));
-                        },
-                        child: Text(AppLocalization.of(context).login),
+                      return Semantics(
+                        container: true,
+                        identifier: TestIds.loginSubmit,
+                        child: FilledButton(
+                          onPressed: () {
+                            widget.viewModel.login.execute((
+                              _email.value.text,
+                              _password.value.text,
+                            ));
+                          },
+                          child: Text(AppLocalization.of(context).login),
+                        ),
                       );
                     },
                   ),

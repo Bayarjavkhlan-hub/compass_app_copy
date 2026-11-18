@@ -2,12 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../routing/routes.dart';
 import '../../core/localization/applocalization.dart';
 import '../../core/ui/error_indicator.dart';
+import '../../core/ui/test_ids.dart';
 import '../view_models/booking_viewmodel.dart';
 import 'booking_body.dart';
 
@@ -44,15 +45,19 @@ class _BookingScreenState extends State<BookingScreen> {
       child: Scaffold(
         floatingActionButton: ListenableBuilder(
           listenable: widget.viewModel,
-          builder: (context, _) => FloatingActionButton.extended(
-            // Workaround for https://github.com/flutter/flutter/issues/115358#issuecomment-2117157419
-            heroTag: null,
-            key: const ValueKey('share-button'),
-            onPressed: widget.viewModel.booking != null
-                ? widget.viewModel.shareBooking.execute
-                : null,
-            label: Text(AppLocalization.of(context).shareTrip),
-            icon: const Icon(Icons.share_outlined),
+          builder: (context, _) => Semantics(
+            container: true,
+            identifier: TestIds.shareTrip,
+            child: FloatingActionButton.extended(
+              // Workaround for https://github.com/flutter/flutter/issues/115358#issuecomment-2117157419
+              heroTag: null,
+              key: const ValueKey('share-button'),
+              onPressed: widget.viewModel.booking != null
+                  ? widget.viewModel.shareBooking.execute
+                  : null,
+              label: Text(AppLocalization.of(context).shareTrip),
+              icon: const Icon(Icons.share_outlined),
+            ),
           ),
         ),
         body: ListenableBuilder(

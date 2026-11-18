@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:material_ui/material_ui.dart';
 
 import '../../../domain/models/continent/continent.dart';
 import '../../../utils/image_error_listener.dart';
@@ -12,6 +12,7 @@ import '../../core/localization/applocalization.dart';
 import '../../core/themes/colors.dart';
 import '../../core/themes/dimens.dart';
 import '../../core/ui/error_indicator.dart';
+import '../../core/ui/test_ids.dart';
 import '../view_models/search_form_viewmodel.dart';
 
 /// Continent selection carousel
@@ -90,70 +91,74 @@ class _CarouselItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 140,
-      height: 140,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Stack(
-          children: [
-            CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-              errorListener: imageErrorListener,
-              errorWidget: (context, url, error) {
-                // NOTE: Getting "invalid image data" error for some of the images
-                // e.g. https://rstr.in/google/tripedia/jlbgFDrSUVE
-                return const DecoratedBox(
-                  decoration: BoxDecoration(color: AppColors.grey3),
-                  child: SizedBox(width: 140, height: 140),
-                );
-              },
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  name,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.openSans(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.white1,
+    return Semantics(
+      container: true,
+      identifier: TestIds.continent(name),
+      child: SizedBox(
+        width: 140,
+        height: 140,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            children: [
+              CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                errorListener: imageErrorListener,
+                errorWidget: (context, url, error) {
+                  // NOTE: Getting "invalid image data" error for some of the images
+                  // e.g. https://rstr.in/google/tripedia/jlbgFDrSUVE
+                  return const DecoratedBox(
+                    decoration: BoxDecoration(color: AppColors.grey3),
+                    child: SizedBox(width: 140, height: 140),
+                  );
+                },
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.white1,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Overlay when other continent is selected
-            Positioned.fill(
-              child: AnimatedOpacity(
-                opacity: _selected() ? 0 : 0.7,
-                duration: kThemeChangeDuration,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    // Support dark-mode
-                    color: Theme.of(context).colorScheme.onPrimary,
+              // Overlay when other continent is selected
+              Positioned.fill(
+                child: AnimatedOpacity(
+                  opacity: _selected() ? 0 : 0.7,
+                  duration: kThemeChangeDuration,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      // Support dark-mode
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Handle taps
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    if (viewModel.selectedContinent == name) {
-                      viewModel.selectedContinent = null;
-                    } else {
-                      viewModel.selectedContinent = name;
-                    }
-                  },
+              // Handle taps
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      if (viewModel.selectedContinent == name) {
+                        viewModel.selectedContinent = null;
+                      } else {
+                        viewModel.selectedContinent = name;
+                      }
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

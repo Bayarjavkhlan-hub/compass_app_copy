@@ -2,10 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 import '../../core/themes/colors.dart';
 import '../../core/themes/dimens.dart';
+import '../../core/ui/test_ids.dart';
 import '../view_models/search_form_viewmodel.dart';
 
 const String removeGuestsKey = 'remove-guests';
@@ -63,31 +64,46 @@ class _QuantitySelector extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            key: const ValueKey(removeGuestsKey),
-            onTap: () {
-              viewModel.guests--;
-            },
-            child: const Icon(
-              Icons.remove_circle_outline,
-              color: AppColors.grey3,
+          Semantics(
+            container: true,
+            identifier: TestIds.guestsRemove,
+            child: InkWell(
+              key: const ValueKey(removeGuestsKey),
+              onTap: () {
+                viewModel.guests--;
+              },
+              child: const Icon(
+                Icons.remove_circle_outline,
+                color: AppColors.grey3,
+              ),
             ),
           ),
-          ListenableBuilder(
-            listenable: viewModel,
-            builder: (context, _) => Text(
-              viewModel.guests.toString(),
-              style: viewModel.guests == 0
-                  ? Theme.of(context).inputDecorationTheme.hintStyle
-                  : Theme.of(context).textTheme.bodyMedium,
+          Semantics(
+            container: true,
+            identifier: TestIds.guestsCount,
+            child: ListenableBuilder(
+              listenable: viewModel,
+              builder: (context, _) => Text(
+                viewModel.guests.toString(),
+                style: viewModel.guests == 0
+                    ? Theme.of(context).inputDecorationTheme.hintStyle
+                    : Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
           ),
-          InkWell(
-            key: const ValueKey(addGuestsKey),
-            onTap: () {
-              viewModel.guests++;
-            },
-            child: const Icon(Icons.add_circle_outline, color: AppColors.grey3),
+          Semantics(
+            container: true,
+            identifier: TestIds.guestsAdd,
+            child: InkWell(
+              key: const ValueKey(addGuestsKey),
+              onTap: () {
+                viewModel.guests++;
+              },
+              child: const Icon(
+                Icons.add_circle_outline,
+                color: AppColors.grey3,
+              ),
+            ),
           ),
         ],
       ),

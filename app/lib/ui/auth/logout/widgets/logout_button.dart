@@ -2,10 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/localization/applocalization.dart';
 import '../../../core/themes/colors.dart';
+import '../../../core/ui/test_ids.dart';
 import '../view_models/logout_viewmodel.dart';
 
 class LogoutButton extends StatefulWidget {
@@ -39,25 +40,29 @@ class _LogoutButtonState extends State<LogoutButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40.0,
-      width: 40.0,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.grey1),
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.transparent,
-        ),
-        child: InkResponse(
-          borderRadius: BorderRadius.circular(8.0),
-          onTap: () {
-            widget.viewModel.logout.execute();
-          },
-          child: Center(
-            child: Icon(
-              size: 24.0,
-              Icons.logout,
-              color: Theme.of(context).colorScheme.onSurface,
+    return Semantics(
+      container: true,
+      identifier: TestIds.logoutButton,
+      child: SizedBox(
+        height: 40.0,
+        width: 40.0,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.grey1),
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.transparent,
+          ),
+          child: InkResponse(
+            borderRadius: BorderRadius.circular(8.0),
+            onTap: () {
+              widget.viewModel.logout.execute();
+            },
+            child: Center(
+              child: Icon(
+                size: 24.0,
+                Icons.logout,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
         ),

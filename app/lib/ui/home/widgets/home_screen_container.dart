@@ -30,6 +30,17 @@ class _HomeScreenContainerState extends State<HomeScreenContainer> {
   }
 
   @override
+  void didUpdateWidget(covariant HomeScreenContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // The router rebuilds this route (with a new LogoutViewModel) when
+    // navigating back to home, e.g. after creating a booking. The State and
+    // its view model survive that, so refresh the bookings list explicitly.
+    if (oldWidget.logoutViewModel != widget.logoutViewModel) {
+      _viewModel.load.execute();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return HomeScreen(
       viewModel: _viewModel,
