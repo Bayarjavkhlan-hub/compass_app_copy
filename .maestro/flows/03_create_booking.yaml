@@ -21,10 +21,11 @@ tags:
 
 # Activities
 - assertVisible: "0 selected"
-- assertVisible:
-    enabled: false
-    childOf:
-      id: activities_confirm
+# Confirm does nothing until an activity is selected
+- tapOn:
+    id: activities_confirm
+- waitForAnimationToEnd
+- assertVisible: "0 selected"
 - tapOn:
     id: activity_scenic-boat-tour
 - tapOn:

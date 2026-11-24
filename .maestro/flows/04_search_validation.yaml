@@ -1,5 +1,5 @@
 appId: com.example.compassApp
-name: Search is only enabled once the form is complete
+name: Search does nothing until the form is complete
 tags:
   - regression
 ---
@@ -7,18 +7,12 @@ tags:
     clearState: true
 - tapOn:
     id: home_book_new_trip
-- assertVisible:
-    enabled: false
-    childOf:
-      id: search_submit
+- runFlow: ../subflows/assert_search_blocked.yaml
 
 # Continent alone is not enough
 - tapOn:
     id: search_continent_asia
-- assertVisible:
-    enabled: false
-    childOf:
-      id: search_submit
+- runFlow: ../subflows/assert_search_blocked.yaml
 
 # Guests counter cannot go below zero
 - tapOn:
@@ -31,10 +25,7 @@ tags:
 - assertVisible:
     id: search_guests_count
     text: "1"
-- assertVisible:
-    enabled: false
-    childOf:
-      id: search_submit
+- runFlow: ../subflows/assert_search_blocked.yaml
 
 # Back navigation returns home without saving
 - tapOn:

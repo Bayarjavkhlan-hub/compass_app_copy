@@ -4,10 +4,6 @@ appId: com.example.compassApp
 ---
 - tapOn:
     id: home_book_new_trip
-- assertVisible:
-    enabled: false
-    childOf:
-      id: search_submit
 - tapOn:
     id: search_continent_${CONTINENT_ID || 'europe'}
 
@@ -36,9 +32,5 @@ appId: com.example.compassApp
     commands:
       - tapOn:
           id: search_guests_add
-- assertVisible:
-    enabled: true
-    childOf:
-      id: search_submit
 - tapOn:
     id: search_submit

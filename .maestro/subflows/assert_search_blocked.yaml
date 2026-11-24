@@ -1,0 +1,12 @@
+# Asserts the Search button does nothing (form incomplete): tapping it keeps
+# us on the search form. Checks behaviour rather than the `enabled` attribute,
+# which Android and iOS report differently for Flutter widgets.
+appId: com.example.compassApp
+---
+- tapOn:
+    id: search_submit
+- waitForAnimationToEnd
+- assertVisible:
+    id: search_submit
+- assertNotVisible:
+    id: "result_.*"
