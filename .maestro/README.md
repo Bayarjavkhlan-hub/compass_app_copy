@@ -7,7 +7,7 @@ The same flows run unchanged on Android and iOS. Both builds use the app ID `com
 | `01_home_smoke` | smoke | Home loads with the seeded Alaska booking |
 | `02_open_existing_booking` | smoke | Open a booking, return home |
 | `03_create_booking` | smoke, booking | Search → results → activities → booking → booking listed on home |
-| `04_search_validation` | regression | Search is disabled until the form is complete, guest counter limits |
+| `04_search_validation` | regression | Search does nothing until the form is complete, guest counter limits |
 | `05_delete_booking` | regression | Swipe to delete, snackbar shown |
 
 `subflows/search_trip.yaml` fills in the search form (with the `CONTINENT_ID`, `START_OFFSET`, `LENGTH` and `GUESTS_TAPS` params). `scripts/trip_dates.js` picks trip dates relative to today, so the flows never go stale.
@@ -29,7 +29,7 @@ Always build the **development** version of the app (`main_development.dart`): i
 
 ## Gotchas
 
-- **Enabled state:** the ID sits on a wrapper node, and the enabled/disabled state lives on the button node inside it. Assert it with `enabled: false` plus `childOf: { id: ... }`.
+- **Enabled state:** don't assert `enabled: false`. Android and iOS report a Flutter button's enabled state differently, so it passed on Android and failed on iOS. Assert behaviour instead: tap the button and check nothing happened (see `subflows/assert_search_blocked.yaml`).
 - **Swipe to delete:** `swipe: from: id` starts at the row's center and is too short for `Dismissible`'s 40% threshold. Use explicit `start`/`end` coordinates, and keep them away from the screen edges, because edge swipes trigger the OS back gesture.
 - **Emulator storage:** the debug APK is about 190 MB. `adb install -r` can fail with `INSUFFICIENT_STORAGE`, so uninstall first.
 - **Images:** they show `HttpException: 403` text because the upstream image bucket is gone. Don't assert on images.
